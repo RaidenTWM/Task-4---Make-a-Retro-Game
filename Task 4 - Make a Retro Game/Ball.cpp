@@ -8,8 +8,10 @@ Ball::Ball()
 	speed = { 0, 0 };
 	radius = 7;
 	active = false;
+	hit = LoadSound("Sounds/Brick_Hit.wav");
+	death = LoadSound("Death.wav");
 }
-int Ball::OnUpdate(Player* player, Brick* brick[5][20])
+int Ball::OnUpdate(Player* player, Brick* brick[Brick::LINES_OF_BRICKS][Brick::BRICKS_PER_LINE], int* score)
 {
 	//Ball launching logic
 	if (!active)
@@ -18,6 +20,7 @@ int Ball::OnUpdate(Player* player, Brick* brick[5][20])
 		{
 			active = true;
 			speed = { 0, -5 };
+			PlaySound(death);
 		}
 	}
 
@@ -34,7 +37,7 @@ int Ball::OnUpdate(Player* player, Brick* brick[5][20])
 
 	//Collision logic: ball vs walls
 	if (((position.x + radius) >= GetScreenWidth()) || ((position.x - radius) <= 0)) { speed.x *= -1; }
-	if ((position.y - radius) <= 0) { speed.y *= -1; }
+	if ((position.y - radius) <= 0) { speed.y *= -1; score += Brick::BRICK_POINTS; }
 	if ((position.y + radius) >= GetScreenHeight())
 	{
 		speed = { 0, 0 };
@@ -53,32 +56,32 @@ int Ball::OnUpdate(Player* player, Brick* brick[5][20])
 	}
 
 	//Collision logic: ball vs brick
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < Brick::LINES_OF_BRICKS; i++)
 	{
-		for (int j = 0; j < 20; j++)
+		for (int j = 0; j < Brick::BRICKS_PER_LINE; j++)
 		{
 			if (brick[i][j]->IsAlive())
 			{
 				//Hit below
-				if (((position.y - radius) <= (brick[i][j]->GetPositionY() + 20)) && ((position.y - radius) > (brick[i][j]->GetPositionY() + 20 + speed.y)) && ((fabs(position.x + brick[i][j]->GetPositionX())) < ((GetScreenWidth() / 20) / 2 + radius * 2 / 3)) && (speed.y < 0))
+				if (((position.y - radius) <= (brick[i][j]->GetPositionY() + Brick::brickSize.y / 2)) && ((position.y - radius) > (brick[i][j]->GetPositionY() + Brick::brickSize.y / 2 + speed.y)) && ((fabs(position.x - brick[i][j]->GetPositionX())) < (Brick::brickSize.x / 2 + radius * 2 / 3)) && (speed.y < 0))
 				{
 					brick[i][j]->Kill();
 					speed.y *= -1;
 				}
 				//Hit above
-				else if (((position.y + radius) >= (brick[i][j]->GetPositionY() - 20)) && ((position.y + radius) < (brick[i][j]->GetPositionY() - 20 + speed.y)) && ((fabs(position.x - brick[i][j]->GetPositionX())) < ((GetScreenWidth() / 20) / 2 + radius * 2 / 3)) && (speed.y > 0))
+				if (((position.y + radius) >= (brick[i][j]->GetPositionY() - Brick::brickSize.y / 2)) && ((position.y + radius) < (brick[i][j]->GetPositionY() - Brick::brickSize.y / 2 + speed.y)) && ((fabs(position.x - brick[i][j]->GetPositionX())) < (Brick::brickSize.x / 2 + radius * 2 / 3)) && (speed.y > 0))
 				{
 					brick[i][j]->Kill();
 					speed.y *= -1;
 				}
 				//Hit left
-				else if (((position.x + radius) >= (brick[i][j]->GetPositionX() - 20)) && ((position.x + radius) < (brick[i][j]->GetPositionX() - (GetScreenWidth() / 20) / 2 + speed.x)) && ((fabs(position.y - brick[i][j]->GetPositionY())) < (20 + radius * 2 / 3)) && (speed.x > 0))
+				if (((position.x + radius) >= (brick[i][j]->GetPositionX() - Brick::brickSize.x / 2)) && ((position.x + radius) < (brick[i][j]->GetPositionX() - Brick::brickSize.x / 2 + speed.x)) && ((fabs(position.y - brick[i][j]->GetPositionY())) < (Brick::brickSize.y / 2 + radius * 2 / 3)) && (speed.x > 0))
 				{
 					brick[i][j]->Kill();
 					speed.x *= -1;
 				}
 				//Hit right
-				else if (((position.x - radius) <= (brick[i][j]->GetPositionX() + 20)) && ((position.x - radius) > (brick[i][j]->GetPositionX() + (GetScreenWidth() / 20) / 2 + speed.x)) && ((fabs(position.y - brick[i][j]->GetPositionY())) < (20 + radius * 2 / 3)) && (speed.x < 0))
+				if (((position.x - radius) <= (brick[i][j]->GetPositionX() + Brick::brickSize.x / 2)) && ((position.x - radius) > (brick[i][j]->GetPositionX() + Brick::brickSize.x / 2 + speed.x)) && ((fabs(position.y - brick[i][j]->GetPositionY())) < (Brick::brickSize.y / 2 + radius * 2 / 3)) && (speed.x < 0))
 				{
 					brick[i][j]->Kill();
 					speed.x *= -1;

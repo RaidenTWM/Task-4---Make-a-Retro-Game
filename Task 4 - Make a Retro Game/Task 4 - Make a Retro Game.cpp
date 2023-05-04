@@ -1,7 +1,6 @@
 #include <iostream>
 #include "raylib.h"
 #include "Game.h"
-
 int main()
 {
     //Creates a new Game class variable called game.

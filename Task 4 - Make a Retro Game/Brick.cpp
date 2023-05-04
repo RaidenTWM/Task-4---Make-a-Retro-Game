@@ -1,17 +1,11 @@
 #include "Brick.h"
 #include "raylib.h"
 
-Brick::Brick()
+const Vector2 Brick::brickSize = { 1280 / BRICKS_PER_LINE, 40 };
+Brick::Brick(int i, int j)
 {
-	brickSize = { (float)GetScreenWidth() / 20, 40 };
-	for (int i = 0; i < 5; i++)
-	{
-		for (int j = 0; j < 20; j++)
-		{
-			position = { j * brickSize.x + brickSize.x / 2, i * brickSize.y + 50 };
-			active = true;
-		}
-	}
+	position = { j * brickSize.x + brickSize.x / 2, i * brickSize.y + 75 };
+	active = true;
 }
 
 float Brick::GetPositionX()

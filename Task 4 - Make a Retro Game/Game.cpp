@@ -6,17 +6,18 @@
 
 Ball* ball;
 Player* player;
-Brick* brick[5][20];
+Brick* brick[Brick::LINES_OF_BRICKS][Brick::BRICKS_PER_LINE];
 bool gameOver = false;
+int score = 0;
 void Game::Init()
 {
     ball = new Ball();
     player = new Player();
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < Brick::LINES_OF_BRICKS; i++)
     {
-        for (int j = 0; j < 20; j++)
+        for (int j = 0; j < Brick::BRICKS_PER_LINE; j++)
         {
-            brick[i][j] = new Brick();
+            brick[i][j] = new Brick(i, j);
         }
     }
 }
@@ -31,7 +32,7 @@ Game::~Game() {
 void Game::Update()
 {
     player->OnUpdate();
-    ball->OnUpdate(player, brick);
+    ball->OnUpdate(player, brick, &score);
     if (player->life <= 0) { gameOver = true; }
     else
     {
@@ -73,30 +74,52 @@ void Game::Draw()
 
     ClearBackground(RAYWHITE);
 
+
     DrawFPS(10, 10);
 
     if (!gameOver)
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < Brick::LINES_OF_BRICKS; i++)
         {
-            for (int j = 0; j < 20; j++)
+            for (int j = 0; j < Brick::BRICKS_PER_LINE; j++)
             {
                 if (brick[i][j]->IsAlive())
                 {
-                    if ((i + j) % 2 == 0) DrawRectangle(brick[i][j]->GetPositionX() - (GetScreenWidth() / 20) / 2, brick[i][j]->GetPositionY() - 20, (GetScreenWidth() / 20), 40, GRAY);
-                    else
+                    if (i == 0)
                     {
-                        DrawRectangle(brick[i][j]->GetPositionX() - (GetScreenWidth() / 20) / 2, brick[i][j]->GetPositionY() - 20, (GetScreenWidth() / 20), 40, DARKGRAY);
+                        DrawRectangle(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, DARKGRAY);
+                        DrawRectangleLines(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, BLACK);
+                    }
+                    else if (i == 1)
+                    {
+                        DrawRectangle(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, RED);
+                        DrawRectangleLines(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, BLACK);
+                    }
+                    else if (i == 2)
+                    {
+                        DrawRectangle(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, YELLOW);
+                        DrawRectangleLines(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, BLACK);
+                    }
+                    else if (i == 3)
+                    {
+                        DrawRectangle(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, BLUE);
+                        DrawRectangleLines(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, BLACK);
+                    }
+                    else if (i == 4)
+                    {
+                        DrawRectangle(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, GREEN);
+                        DrawRectangleLines(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, BLACK);
                     }
                 }
             }
         }
         ball->OnDraw();
         player->OnDraw();
+        DrawText(TextFormat("SCORE: %05i", score), 10, GetScreenHeight() - 20, 20, GRAY);
     }
     else
     {
-        DrawText("PRESS [ENTER] TO PLAY AGAIN", GetScreenWidth() / 2 - MeasureText("PRESS [ENTER] TO PLAY AGAIN", 20) / 2, GetScreenHeight() / 2 - 50, 20, GRAY);
+        DrawText("PRESS [ENTER] TO PLAY AGAIN", GetScreenWidth() / 2 - MeasureText("PRESS [ENTER] TO PLAY AGAIN", 30) / 2, GetScreenHeight() / 2 - 50, 30, GRAY);
     }
     EndDrawing();
 }

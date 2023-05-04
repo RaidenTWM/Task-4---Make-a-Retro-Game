@@ -10,13 +10,19 @@ Player::Player()
 
 int Player::OnUpdate()
 {
+	//Player movement logic
+	if (IsKeyDown(KEY_A)) { position.x -= 5; }
+	if ((position.x - size.x / 2) <= 0) { position.x = size.x / 2; }
+	if (IsKeyDown(KEY_D)) { position.x += 5; }
+	if ((position.x + size.x / 2) >= GetScreenWidth()) { position.x = GetScreenWidth() - size.x / 2; }
 
 	return 0;
 }
 
 void Player::OnDraw()
 {
-	DrawRectangle(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y, BLACK);
+	DrawRectangle(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y, DARKGRAY);
+	DrawRectangleLines(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y, BLACK);
 	for (int i = 0; i < life; i++)
 	{
 		DrawRectangle(20 + 40 * i, GetScreenHeight() - 30, 35, 10, LIGHTGRAY);
