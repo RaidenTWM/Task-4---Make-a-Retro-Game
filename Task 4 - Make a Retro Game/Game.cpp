@@ -66,6 +66,7 @@ void Game::Shutdown()
         }
     }
 }
+
 void Game::Draw()
 {
     BeginDrawing();
