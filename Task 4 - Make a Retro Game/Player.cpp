@@ -1,19 +1,41 @@
 #include "Player.h"
 #include "raylib.h"
+#include <math.h>
  
 Player::Player()
 {
 	position = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() * 7 / 8 };
-	size = { (float)GetScreenWidth() / 10, 20 };
+	size = { 120, 30 };
 	life = 5;
+	playerSprite = LoadTexture("Images/Player_Sprite.png");
+	playerSprite.width = size.x;
+	playerSprite.height = size.y;
 }
 
-int Player::OnUpdate()
+int Player::OnUpdate(float speed)
 {
 	//Player movement logic
-	if (IsKeyDown(KEY_A)) { position.x -= 5; }
+	//If holding 'A', move left
+	if (IsKeyDown(KEY_A)) 
+	{ 
+		if (fabs(speed) > 0)
+		{
+		position.x -= fabs(speed); 
+		}
+		else { position.x -= 5; }
+	}
+	//Stop the player from moving off the screen
 	if ((position.x - size.x / 2) <= 0) { position.x = size.x / 2; }
-	if (IsKeyDown(KEY_D)) { position.x += 5; }
+	//If holding 'D', move right
+	if (IsKeyDown(KEY_D))
+	{
+		if (fabs(speed) > 0)
+		{
+			position.x += fabs(speed);
+		}
+		else { position.x += 5; }
+	}
+	//Stop the player from moving off the screen
 	if ((position.x + size.x / 2) >= GetScreenWidth()) { position.x = GetScreenWidth() - size.x / 2; }
 
 	return 0;
@@ -21,8 +43,10 @@ int Player::OnUpdate()
 
 void Player::OnDraw()
 {
-	DrawRectangle(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y, DARKGRAY);
-	DrawRectangleLines(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y, BLACK);
+	//Drawing the player as a rectangle
+	DrawTextureEx(playerSprite, { position.x - (playerSprite.width / 2), position.y - (playerSprite.height / 2) }, 0, 1, WHITE);
+	//DrawRectangle(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y, DARKGRAY);
+	//DrawRectangleLines(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y, BLACK);
 	for (int i = 0; i < life; i++)
 	{
 		DrawRectangle(20 + 40 * i, GetScreenHeight() - 30, 35, 10, LIGHTGRAY);
@@ -47,4 +71,9 @@ float Player::GetWidth()
 float Player::GetHeight()
 {
 	return size.y;
+}
+
+void Player::Unload()
+{
+	UnloadTexture(playerSprite);
 }

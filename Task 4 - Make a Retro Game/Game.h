@@ -4,6 +4,7 @@ class Game
 private:
     int playerPoints = 0;
     int lives = 0;
+    Texture2D background;
 public:
     Game();
     void Shutdown();

@@ -1,11 +1,15 @@
 #include "Brick.h"
 #include "raylib.h"
 
-const Vector2 Brick::brickSize = { 1280 / BRICKS_PER_LINE, 40 };
+Vector2 Brick::brickSize;
 Brick::Brick(int i, int j)
 {
+	Brick::brickSize = { (float)GetScreenWidth() / BRICKS_PER_LINE, (float)GetScreenHeight() / 18};
 	position = { j * brickSize.x + brickSize.x / 2, i * brickSize.y + 75 };
 	active = true;
+	brickSprite = LoadTexture("Images/Brick_Sprite.png");
+	brickSprite.width = brickSize.x;
+	brickSprite.height = brickSize.y;
 }
 
 float Brick::GetPositionX()
@@ -26,4 +30,9 @@ bool Brick::IsAlive()
 void Brick::Kill()
 {
 	active = false;
+}
+
+void Brick::Unload()
+{
+	UnloadTexture(brickSprite);
 }

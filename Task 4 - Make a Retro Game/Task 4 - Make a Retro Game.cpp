@@ -11,6 +11,8 @@ int main()
     //Sets the size of the game window and the name of the window.
     InitWindow(1280, 720, "Arkanoid");
 
+    InitAudioDevice();
+
     //Initialises the game to run the init code found in the Game.cpp.
     game->Init();
 
