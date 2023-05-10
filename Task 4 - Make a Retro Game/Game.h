@@ -10,7 +10,7 @@ public:
     void Shutdown();
     void Update();
     void Draw();
-    void Init();
+    void Init(int* difficulty);
     ~Game();
 };
 

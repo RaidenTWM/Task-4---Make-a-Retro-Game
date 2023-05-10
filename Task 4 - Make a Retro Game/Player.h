@@ -6,8 +6,9 @@ protected:
 	Vector2 position;
 	Vector2 size;
 	Texture2D playerSprite;
+	Texture2D liveSprite;
 public:
-	Player();
+	Player(int* diff);
 	int life;
 	int OnUpdate(float speed);
 	void OnDraw();

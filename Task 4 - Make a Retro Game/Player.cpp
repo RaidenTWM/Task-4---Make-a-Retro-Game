@@ -2,14 +2,19 @@
 #include "raylib.h"
 #include <math.h>
  
-Player::Player()
+Player::Player(int* diff)
 {
 	position = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() * 7 / 8 };
 	size = { 120, 30 };
-	life = 5;
+	if (*diff == 2) { life = 3; }
+	else if (*diff == 1) { life = 5; }
+	else { life = 0; }
 	playerSprite = LoadTexture("Images/Player_Sprite.png");
 	playerSprite.width = size.x;
 	playerSprite.height = size.y;
+	liveSprite = LoadTexture("Images/Lives.png");
+	liveSprite.width = 35;
+	liveSprite.height = 10;
 }
 
 int Player::OnUpdate(float speed)
@@ -43,13 +48,11 @@ int Player::OnUpdate(float speed)
 
 void Player::OnDraw()
 {
-	//Drawing the player as a rectangle
+	//Drawing the player as a texture
 	DrawTextureEx(playerSprite, { position.x - (playerSprite.width / 2), position.y - (playerSprite.height / 2) }, 0, 1, WHITE);
-	//DrawRectangle(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y, DARKGRAY);
-	//DrawRectangleLines(position.x - size.x / 2, position.y - size.y / 2, size.x, size.y, BLACK);
 	for (int i = 0; i < life; i++)
 	{
-		DrawRectangle(20 + 40 * i, GetScreenHeight() - 30, 35, 10, LIGHTGRAY);
+		DrawTextureEx(liveSprite, { (float)50 + 40 * i, (float)GetScreenHeight() - 30 }, 0, 1, LIGHTGRAY);
 	}
 }
 

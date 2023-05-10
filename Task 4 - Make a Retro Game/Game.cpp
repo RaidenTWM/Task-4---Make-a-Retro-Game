@@ -10,11 +10,12 @@ Player* player;
 Brick* brick[Brick::LINES_OF_BRICKS][Brick::BRICKS_PER_LINE];
 bool gameOver = false;
 int score = 0;
-Texture2D background;
-void Game::Init()
+int* diff;
+void Game::Init(int* difficulty)
 {
+    diff = difficulty;
     ball = new Ball();
-    player = new Player();
+    player = new Player(diff);
     //Creating the rows of bricks required for the game
     for (int i = 0; i < Brick::LINES_OF_BRICKS; i++)
     {
@@ -24,7 +25,7 @@ void Game::Init()
             brick[i][j] = new Brick(i, j);
         }
     }
-    background = LoadTexture("Images/Background.png");
+    Game::background = LoadTexture("Images/Background.png");
     background.width = GetScreenWidth();
     background.height = GetScreenHeight();
 }
@@ -46,7 +47,7 @@ void Game::Update()
     //Updating the ball
     ball->OnUpdate(player, brick, &score);
     //Checks to see if the player has any lives left...
-    if (player->life <= 0) { gameOver = true; }
+    if (player->life <= 0 && *diff != 0) { gameOver = true; }
     //...else it checks to see if there are any bricks still active.
     else
     {
@@ -62,7 +63,7 @@ void Game::Update()
     //If the game is over, the player can reset it by pressing ENTER
     if (gameOver && IsKeyPressed(KEY_ENTER))
     {
-        Init();
+        Init(diff);
         gameOver = false;
         score = 0;
     }
@@ -110,31 +111,8 @@ void Game::Draw()
                 //Draws all of the living bricks (Coloured by row, with black outlines on them all)
                 if (brick[i][j]->IsAlive())
                 {
-                    if (i == 0)
-                    {
-                        DrawRectangle(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, DARKGRAY);
-                        DrawRectangleLines(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, BLACK);
-                    }
-                    else if (i == 1)
-                    {
-                        DrawRectangle(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, RED);
-                        DrawRectangleLines(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, BLACK);
-                    }
-                    else if (i == 2)
-                    {
-                        DrawRectangle(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, YELLOW);
-                        DrawRectangleLines(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, BLACK);
-                    }
-                    else if (i == 3)
-                    {
-                        DrawRectangle(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, BLUE);
-                        DrawRectangleLines(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, BLACK);
-                    }
-                    else if (i == 4)
-                    {
-                        DrawRectangle(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, GREEN);
-                        DrawRectangleLines(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, BLACK);
-                    }
+                    DrawTextureEx(brick[i][j]->brickSprite, { brick[i][j]->GetPositionX() - brick[i][j]->brickSize.x / 2, brick[i][j]->GetPositionY() - brick[i][j]->brickSize.y / 2 }, 0, 1, WHITE);
+                    DrawRectangleLines(brick[i][j]->GetPositionX() - Brick::brickSize.x / 2, brick[i][j]->GetPositionY() - Brick::brickSize.y / 2, Brick::brickSize.x, Brick::brickSize.y, BLACK);
                 }
             }
         }
@@ -142,12 +120,13 @@ void Game::Draw()
         ball->OnDraw();
         player->OnDraw();
         //Writes a score in the bottom left
-        DrawText(TextFormat("SCORE: %05i", score), 10, GetScreenHeight() - 20, 20, GRAY);
+        DrawText(TextFormat("SCORE: %05i", score), 75, GetScreenHeight() - 20, 20, GRAY);
     }
     else
     {
         //If the game IS over, display the text instead and don't draw anything else.
         DrawText("PRESS [ENTER] TO PLAY AGAIN", GetScreenWidth() / 2 - MeasureText("PRESS [ENTER] TO PLAY AGAIN", 30) / 2, GetScreenHeight() / 2 - 50, 30, GRAY);
+        DrawText(TextFormat("SCORE: %05i", score), GetScreenWidth() / 2 - MeasureText(TextFormat("SCORE: %05i", score), 30), GetScreenHeight() / 2, 30, GRAY);
     }
     EndDrawing();
 }

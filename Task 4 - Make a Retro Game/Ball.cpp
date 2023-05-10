@@ -76,7 +76,7 @@ int Ball::OnUpdate(Player* player, Brick* brick[Brick::LINES_OF_BRICKS][Brick::B
 				if (((position.y - radius) <= (brick[i][j]->GetPositionY() + Brick::brickSize.y / 2)) && ((position.y - radius) > (brick[i][j]->GetPositionY() + Brick::brickSize.y / 2 + speed.y)) && ((fabs(position.x - brick[i][j]->GetPositionX())) < (Brick::brickSize.x / 2 + radius * 2 / 3)) && (speed.y < 0))
 				{
 					brick[i][j]->Kill();
-					speed.y *= -1.05;
+					speed.y *= -1.005;
 					*score += 100;
 					PlaySound(hit);
 				}
@@ -84,7 +84,7 @@ int Ball::OnUpdate(Player* player, Brick* brick[Brick::LINES_OF_BRICKS][Brick::B
 				if (((position.y + radius) >= (brick[i][j]->GetPositionY() - Brick::brickSize.y / 2)) && ((position.y + radius) < (brick[i][j]->GetPositionY() - Brick::brickSize.y / 2 + speed.y)) && ((fabs(position.x - brick[i][j]->GetPositionX())) < (Brick::brickSize.x / 2 + radius * 2 / 3)) && (speed.y > 0))
 				{
 					brick[i][j]->Kill();
-					speed.y *= -1.05;
+					speed.y *= -1.005;
 					*score += 100;
 					PlaySound(hit);
 				}
@@ -92,7 +92,7 @@ int Ball::OnUpdate(Player* player, Brick* brick[Brick::LINES_OF_BRICKS][Brick::B
 				if (((position.x + radius) >= (brick[i][j]->GetPositionX() - Brick::brickSize.x / 2)) && ((position.x + radius) < (brick[i][j]->GetPositionX() - Brick::brickSize.x / 2 + speed.x)) && ((fabs(position.y - brick[i][j]->GetPositionY())) < (Brick::brickSize.y / 2 + radius * 2 / 3)) && (speed.x > 0))
 				{
 					brick[i][j]->Kill();
-					speed.x *= -1.05;
+					speed.x *= -1.005;
 					*score += 100;
 					PlaySound(hit);
 				}
@@ -100,7 +100,7 @@ int Ball::OnUpdate(Player* player, Brick* brick[Brick::LINES_OF_BRICKS][Brick::B
 				if (((position.x - radius) <= (brick[i][j]->GetPositionX() + Brick::brickSize.x / 2)) && ((position.x - radius) > (brick[i][j]->GetPositionX() + Brick::brickSize.x / 2 + speed.x)) && ((fabs(position.y - brick[i][j]->GetPositionY())) < (Brick::brickSize.y / 2 + radius * 2 / 3)) && (speed.x < 0))
 				{
 					brick[i][j]->Kill();
-					speed.x *= -1.05;
+					speed.x *= -1.050;
 					*score += 100;
 					PlaySound(hit);
 				}
