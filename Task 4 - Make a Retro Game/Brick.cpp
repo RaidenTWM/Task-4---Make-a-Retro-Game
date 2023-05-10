@@ -4,8 +4,8 @@
 Vector2 Brick::brickSize;
 Brick::Brick(int i, int j)
 {
-	Brick::brickSize = { (float)GetScreenWidth() / BRICKS_PER_LINE, (float)GetScreenHeight() / 18};
-	position = { j * brickSize.x + brickSize.x / 2, i * brickSize.y + 75 };
+	Brick::brickSize = { (float)(GetScreenWidth() / BRICKS_PER_LINE - 5), (float)GetScreenHeight() / 18};
+	position = { 50 + j * brickSize.x + brickSize.x / 2, i * brickSize.y + 75 };
 	active = true;
 	brickSprite = LoadTexture("Images/Brick_Sprite.png");
 	brickSprite.width = brickSize.x;

@@ -25,7 +25,7 @@ int Player::OnUpdate(float speed)
 		else { position.x -= 5; }
 	}
 	//Stop the player from moving off the screen
-	if ((position.x - size.x / 2) <= 0) { position.x = size.x / 2; }
+	if ((position.x - size.x / 2) <= 46) { position.x = size.x / 2 + 46; }
 	//If holding 'D', move right
 	if (IsKeyDown(KEY_D))
 	{
@@ -36,7 +36,7 @@ int Player::OnUpdate(float speed)
 		else { position.x += 5; }
 	}
 	//Stop the player from moving off the screen
-	if ((position.x + size.x / 2) >= GetScreenWidth()) { position.x = GetScreenWidth() - size.x / 2; }
+	if ((position.x + size.x / 2) >= GetScreenWidth() - 46) { position.x = GetScreenWidth() - size.x / 2 - 46; }
 
 	return 0;
 }
@@ -53,6 +53,7 @@ void Player::OnDraw()
 	}
 }
 
+//Public ways to get 
 float Player::GetPositionX()
 {
 	return position.x;

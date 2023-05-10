@@ -45,8 +45,8 @@ int Ball::OnUpdate(Player* player, Brick* brick[Brick::LINES_OF_BRICKS][Brick::B
 	}
 
 	//Collision logic: ball vs walls
-	if (((position.x + radius) >= GetScreenWidth()) || ((position.x - radius) <= 0)) { speed.x *= -1; }
-	if ((position.y - radius) <= 0) { speed.y *= -1; *score += 5;; }
+	if (((position.x + radius) >= GetScreenWidth() - 46) || ((position.x - radius) <= 46)) { speed.x *= -1; }
+	if ((position.y - radius) <= 20) { speed.y *= -1; *score += 5;; }
 	if ((position.y + radius) >= GetScreenHeight())
 	{
 		speed = { 0, 0 };
