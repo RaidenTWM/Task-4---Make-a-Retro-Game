@@ -26,6 +26,8 @@ int main()
     //  other classes.
     while (!WindowShouldClose())
     {
+        if (difficulty == 2) { SetTargetFPS(120); }
+        else { SetTargetFPS(60); }
         game->Update();
         game->Draw();
     }

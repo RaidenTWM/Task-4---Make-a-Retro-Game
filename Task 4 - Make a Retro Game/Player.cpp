@@ -6,9 +6,9 @@ Player::Player(int* diff)
 {
 	position = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() * 7 / 8 };
 	size = { 120, 30 };
-	if (*diff == 2) { life = 3; }
+	if (*diff == 0) { life = 0; }
 	else if (*diff == 1) { life = 5; }
-	else { life = 0; }
+	else { life = 3; }
 	playerSprite = LoadTexture("Images/Player_Sprite.png");
 	playerSprite.width = size.x;
 	playerSprite.height = size.y;

@@ -67,6 +67,22 @@ void Game::Update()
         gameOver = false;
         score = 0;
     }
+    //If the game is over, the player can reset it by pressing ENTER
+    if (gameOver && IsKeyPressed(KEY_UP))
+    {
+        *diff += 1;
+        Init(diff);
+        gameOver = false;
+        score = 0;
+    }
+    //If the game is over, the player can reset it by pressing ENTER
+    if (gameOver && IsKeyPressed(KEY_DOWN))
+    {
+        *diff -= 1;
+        Init(diff);
+        gameOver = false;
+        score = 0;
+    }
 }
 
 //Shutdown procedure. Deletes and makes everything a nullptr.
@@ -87,6 +103,7 @@ void Game::Shutdown()
             brick[i][j] = nullptr;
         }
     }
+    diff = nullptr;
 }
 
 //Drawing the game window.
@@ -126,6 +143,8 @@ void Game::Draw()
     {
         //If the game IS over, display the text instead and don't draw anything else.
         DrawText("PRESS [ENTER] TO PLAY AGAIN", GetScreenWidth() / 2 - MeasureText("PRESS [ENTER] TO PLAY AGAIN", 30) / 2, GetScreenHeight() / 2 - 50, 30, GRAY);
+        DrawText("PRESS [UP] TO INCREASE DIFFICULTY", GetScreenWidth() / 2 - MeasureText("PRESS [UP] TO INCREASE DIFFICULTY", 30) / 2, GetScreenHeight() - 100, 30, GRAY);
+        DrawText("PRESS [DOWN] TO DECREASE DIFFICULTY", GetScreenWidth() / 2 - MeasureText("PRESS [DOWN] TO DECREASE DIFFICULTY", 30) / 2, GetScreenHeight() - 50, 30, GRAY);
         DrawText(TextFormat("SCORE: %05i", score), GetScreenWidth() / 2 - MeasureText(TextFormat("SCORE: %05i", score), 30), GetScreenHeight() / 2, 30, GRAY);
     }
     EndDrawing();
