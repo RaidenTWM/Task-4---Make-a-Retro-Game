@@ -11,8 +11,6 @@ int main()
         std::cout << "What difficulty do you want to play with?\n0 = Easy\n1 = Normal\n2 = Hard\nDifficulty: ";
         std::cin >> difficulty;
     }
-    if (difficulty == 2) { SetTargetFPS(120); }
-    else { SetTargetFPS(60); }
 
     //Sets the size of the game window and the name of the window.
     InitWindow(1280, 720, "Arkanoid");
