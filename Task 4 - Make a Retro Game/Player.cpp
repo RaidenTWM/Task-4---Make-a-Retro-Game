@@ -1,17 +1,20 @@
 #include "Player.h"
-#include "raylib.h"
-#include <math.h>
  
 Player::Player(int* diff)
 {
+	//Puts the player at the bottom middle of the screen.
 	position = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() * 7 / 8 };
+	//Assigns the size of the player
 	size = { 120, 30 };
+	//Sets the lives of the player depending on the difficulty
 	if (*diff == 0) { life = 0; }
 	else if (*diff == 1) { life = 5; }
 	else { life = 3; }
+	//Loading the sprite of the player
 	playerSprite = LoadTexture("Images/Player_Sprite.png");
 	playerSprite.width = size.x;
 	playerSprite.height = size.y;
+	//Loading the sprite of the lives
 	liveSprite = LoadTexture("Images/Lives.png");
 	liveSprite.width = 35;
 	liveSprite.height = 10;
@@ -29,7 +32,7 @@ int Player::OnUpdate(float speed)
 		}
 		else { position.x -= 5; }
 	}
-	//Stop the player from moving off the screen
+	//Stop the player from moving off the left side of the screen
 	if ((position.x - size.x / 2) <= 46) { position.x = size.x / 2 + 46; }
 	//If holding 'D', move right
 	if (IsKeyDown(KEY_D))
@@ -40,7 +43,7 @@ int Player::OnUpdate(float speed)
 		}
 		else { position.x += 5; }
 	}
-	//Stop the player from moving off the screen
+	//Stop the player from moving off the right side of the screen
 	if ((position.x + size.x / 2) >= GetScreenWidth() - 46) { position.x = GetScreenWidth() - size.x / 2 - 46; }
 
 	return 0;
@@ -56,7 +59,7 @@ void Player::OnDraw()
 	}
 }
 
-//Public ways to get 
+//Public ways to get values
 float Player::GetPositionX()
 {
 	return position.x;
@@ -77,7 +80,9 @@ float Player::GetHeight()
 	return size.y;
 }
 
+//Unloads the sprites
 void Player::Unload()
 {
 	UnloadTexture(playerSprite);
+	UnloadTexture(liveSprite);
 }

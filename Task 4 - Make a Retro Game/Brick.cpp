@@ -1,5 +1,4 @@
 #include "Brick.h"
-#include "raylib.h"
 
 Vector2 Brick::brickSize;
 Brick::Brick(int i, int j)
@@ -8,7 +7,7 @@ Brick::Brick(int i, int j)
 	Brick::brickSize = { (float)(GetScreenWidth() / BRICKS_PER_LINE - 5), (float)GetScreenHeight() / 18};
 	position = { 50 + j * brickSize.x + brickSize.x / 2, i * brickSize.y + 90 };
 	active = true;
-	//Loads
+	//Loads the bricks based on the row they're apart of.
 	if (i == 0) { brickSprite = LoadTexture("Images/White_Brick.png"); }
 	else if (i == 1) { brickSprite = LoadTexture("Images/Red_Brick.png"); }
 	else if (i == 2) { brickSprite = LoadTexture("Images/Yellow_Brick.png"); }
@@ -18,6 +17,7 @@ Brick::Brick(int i, int j)
 	brickSprite.height = brickSize.y;
 }
 
+//Public way to get values
 float Brick::GetPositionX()
 {
 	return position.x;
@@ -33,6 +33,7 @@ bool Brick::IsAlive()
 	return active;
 }
 
+//Makes a brick inactive
 void Brick::Kill()
 {
 	active = false;

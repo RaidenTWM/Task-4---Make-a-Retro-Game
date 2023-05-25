@@ -1,5 +1,6 @@
 #pragma once
 #include "raylib.h"
+#include <math.h>
 class Player
 {
 protected:
@@ -18,4 +19,3 @@ public:
 	float GetHeight();
 	void Unload();
 };
-

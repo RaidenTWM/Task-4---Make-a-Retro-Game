@@ -17,4 +17,3 @@ public:
 	void Kill();
 	void Unload();
 };
-

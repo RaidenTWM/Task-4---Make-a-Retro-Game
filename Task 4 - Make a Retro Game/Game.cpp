@@ -1,16 +1,6 @@
-#include "raylib.h"
 #include "Game.h"
-#include "Player.h"
-#include "Ball.h"
-#include "Brick.h"
 
 //Pre-initialising all the variables required
-Ball* ball;
-Player* player;
-Brick* brick[Brick::LINES_OF_BRICKS][Brick::BRICKS_PER_LINE];
-bool gameOver = false;
-int score = 0;
-int* diff;
 void Game::Init(int* difficulty)
 {
     diff = difficulty;
@@ -47,16 +37,17 @@ void Game::Update()
     //Updating the ball
     ball->OnUpdate(player, brick, &score);
     //Checks to see if the player has any lives left...
-    if (player->life <= 0 && *diff != 0) { gameOver = true; }
+    if (player->life <= 0 && *diff != 0) { gameOver = true; ball->Stop(); }
     //...else it checks to see if there are any bricks still active.
     else
     {
         gameOver = true;
+        victory = true;
         for (int i = 0; i < 5; i++)
         {
             for (int j = 0; j < 20; j++)
             {
-                if (brick[i][j]->IsAlive()) gameOver = false;
+                if (brick[i][j]->IsAlive()) { gameOver = false; victory = true; }
             }
         }
     }
@@ -65,23 +56,26 @@ void Game::Update()
     {
         Init(diff);
         gameOver = false;
-        score = 0;
+        if (victory) { victory = false; }
+        else { score = 0; }
     }
     //If the game is over, the player can reset it by pressing ENTER
-    if (gameOver && IsKeyPressed(KEY_UP))
+    else if (gameOver && IsKeyPressed(KEY_UP) && *diff != 2)
     {
         *diff += 1;
         Init(diff);
         gameOver = false;
-        score = 0;
+        if (victory) { victory = false; }
+        else { score = 0; }
     }
     //If the game is over, the player can reset it by pressing ENTER
-    if (gameOver && IsKeyPressed(KEY_DOWN))
+    else if (gameOver && IsKeyPressed(KEY_DOWN) && *diff != 0)
     {
         *diff -= 1;
         Init(diff);
         gameOver = false;
-        score = 0;
+        if (victory) { victory = false; }
+        else { score = 0; }
     }
 }
 
@@ -99,7 +93,7 @@ void Game::Shutdown()
         for (int j = 0; j < 20; j++)
         {
             brick[i][j]->Unload();
-            delete brick[i][j];
+            delete brick[i][j]; // Deleting elements of array
             brick[i][j] = nullptr;
         }
     }

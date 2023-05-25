@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include "Player.h"
 #include "Brick.h"
+#include "math.h"
 class Ball
 {
 protected:
@@ -18,5 +19,5 @@ public:
 	int OnUpdate(Player* player, Brick* brick[Brick::LINES_OF_BRICKS][Brick::BRICKS_PER_LINE], int* score);
 	void OnDraw();
 	void Unload();
+	void Stop();
 };
-

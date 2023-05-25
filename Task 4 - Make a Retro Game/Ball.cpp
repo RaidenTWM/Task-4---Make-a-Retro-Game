@@ -1,6 +1,4 @@
 #include "Ball.h"
-#include "math.h"
-#include "raylib.h"
 
 Ball::Ball()
 {
@@ -110,10 +108,15 @@ int Ball::OnUpdate(Player* player, Brick* brick[Brick::LINES_OF_BRICKS][Brick::B
 	}
 	return 0;
 }
+
+void Ball::Stop()
+{
+	this->speed = { 0, 0 };
+}
+
 void Ball::OnDraw()
 {
 	DrawTextureEx(ballSprite, { position.x - (ballSprite.width / 2), position.y - (ballSprite.height / 2) }, 0, 1, WHITE);
-	//DrawCircle(position.x, position.y, radius, MAROON);
 }
 
 void Ball::Unload()
