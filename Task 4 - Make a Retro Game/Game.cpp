@@ -109,9 +109,6 @@ void Game::Draw()
     //ClearBackground(RAYWHITE);
     DrawTextureEx(background, { (float)GetScreenWidth() / 2 - background.width / 2, (float)GetScreenHeight() / 2 - background.height / 2 }, 0, 1, WHITE);
 
-    //Draws the fps in the top left
-    DrawFPS(46, 20);
-
     //If the game isn't over
     if (!gameOver)
     {
